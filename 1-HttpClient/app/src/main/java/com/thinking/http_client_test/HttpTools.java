@@ -49,7 +49,7 @@ public class HttpTools {
         return charset;
     }
 
-    public static void downloadPageASync(String path, final String[] output) {
+    public static void downloadPageAsync(String path, final String[] output) {
         new AsyncTask<String, String, String>() {
             @Override
             protected String doInBackground(String... strings) {
