@@ -1,5 +1,6 @@
 package com.thinking.http_client_test;
 
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
@@ -43,7 +44,7 @@ public class Main3Activity extends AppCompatActivity {
 
     public void onClick(View v) {
         if (v.getId() == R.id.btn_download_baidu) {
-            HttpTools.downloadPageAsync("https://www.uuu228.com/htm/mp3av57/2323.htm", HttpContent);
+            HttpTools.downloadPageAsync("https://www.uuu227.com/htm/mp3avlist57/", HttpContent);
             Toast.makeText(this, "get html finish", Toast.LENGTH_SHORT).show();
         }
         if (v.getId() == R.id.btn_any_baidu) {
@@ -56,5 +57,39 @@ public class Main3Activity extends AppCompatActivity {
         if (v.getId() == R.id.btn_download_resource) {
             FileTools.saveFileAsync(AudioResource, mHandler);
         }
+        if (v.getId() == R.id.btn_download_all) {
+            new AsyncTask<String, String, String>() {
+                @Override
+                protected String doInBackground(String... strings) {
+                    String html_txt = null;
+                    try {
+                        html_txt = HttpTools.downloadPage(strings[0]);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    if (html_txt == null)
+                        return null;
+                    List<String> urls = DocumentTools.getALinks(html_txt);
+                    List<String> audios = new ArrayList<>();
+                    for (int i = 0; i < urls.size(); i++) {
+                        String url = urls.get(i);
+                        url = DocumentTools.joinUrl(strings[0], url);
+                        try {
+                            DocumentTools.getGetAudio(HttpTools.downloadPage(url), audios);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                    for (int i = 0; i < audios.size(); i++) {
+                        String res = audios.get(i);
+                        FileTools.saveFile(res);
+                    }
+
+                    return null;
+                }
+            }.execute("https://www.uuu227.com/htm/mp3avlist57/");
+        }
+
     }
 }

@@ -8,6 +8,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,7 +16,8 @@ import java.util.List;
  */
 
 public class DocumentTools {
-    public static void getALinks(String contents) {
+    public static List<String> getALinks(String contents) {
+        List<String> results = new ArrayList<>();
         Document document = Jsoup.parse(contents);
         Elements links = document.select("a[href]");
         for (int i = 0; i < links.size(); i++) {
@@ -24,8 +26,11 @@ public class DocumentTools {
             if (TextUtils.isEmpty(text.trim())) {
                 continue;
             }
-            Log.i("yuyong_any", String.format("url:%s;txt:%s", link.attr("href"), link.text()));
+            String url = link.attr("href");
+            results.add(url);
+            Log.i("yuyong_any", String.format("url:%s;txt:%s", url, text));
         }
+        return results;
     }
 
     public static void getGetAudio(String contents, List output) {
@@ -37,5 +42,12 @@ public class DocumentTools {
             output.add(src);
             Log.i("yuyong_any", String.format("url:%s;", src));
         }
+    }
+
+    public static String joinUrl(String url_1, String url_2) {
+        String tmp = url_1.replace("//", "##");
+        int root_index = tmp.indexOf("/");
+        String root = url_1.substring(0, root_index);
+        return root + url_2;
     }
 }
