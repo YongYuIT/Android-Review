@@ -15,7 +15,7 @@ public class AddClickListenerTestHandler {
     public static void process(final Object mainObject) throws Exception {
         Class<?> cl = mainObject.getClass();//com.thinking.marktest.MainActivity
         for (final Method marked_method : cl.getDeclaredMethods()) {
-            //method --> setBtn_test
+            //method --> marked_func
             AddClickListenerTestMark mark = marked_method.getAnnotation(AddClickListenerTestMark.class);
             if (mark != null) {
                 //markObj --> @com.thinking.marktest.AddClickListenerTestMark(source=btn_test)
