@@ -8,7 +8,7 @@ public class TestTools {
 
     static {
         System.loadLibrary("crypto");
-        System.loadLibrary("com_thinking_encryp");
+        System.loadLibrary("com_thinking_test");
     }
 
     public native static void do_test();

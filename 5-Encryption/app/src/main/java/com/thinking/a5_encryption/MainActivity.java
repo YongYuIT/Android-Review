@@ -2,6 +2,7 @@ package com.thinking.a5_encryption;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -10,5 +11,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         TestTools.do_test();
+        String out = EncrypTools.doEnDeCryp(1, "fuck", "aaa", "bbb");
+        Log.i("yuyong", "eny-->" + out);
     }
 }

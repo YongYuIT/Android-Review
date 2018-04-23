@@ -39,7 +39,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>E:\android-ndk-r14-beta2\platforms\android-24\arch-arm\usr\include;E:\Review\openssl\android-arm\include;$(IncludePath)</IncludePath>
+    <IncludePath>E:\android-ndk-r14-beta2\platforms\android-24\arch-arm\usr\include;E:\Review\openssl\android-armeabi\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -66,10 +66,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\com_thinking_a5_encryption_EncrypTools.h" />
     <ClInclude Include="..\..\com_thinking_a5_encryption_TestTools.h" />
+    <ClInclude Include="..\..\EncryptionTools.h" />
+    <ClInclude Include="..\..\J2C2JTools.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\com_thinking_a5_encryption_EncrypTools.cpp" />
+    <ClCompile Include="..\..\EncryptionTools.cpp" />
+    <ClCompile Include="..\..\J2C2JTools.cpp" />
     <ClCompile Include="..\..\test.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Android.mk" />
+    <None Include="..\..\Application.mk" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

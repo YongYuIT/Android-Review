@@ -18,10 +18,36 @@
     <ClInclude Include="..\..\com_thinking_a5_encryption_TestTools.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\com_thinking_a5_encryption_EncrypTools.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\EncryptionTools.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\J2C2JTools.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\test.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\EncryptionTools.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\com_thinking_a5_encryption_EncrypTools.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\J2C2JTools.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Android.mk">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="..\..\Application.mk">
+      <Filter>资源文件</Filter>
+    </None>
   </ItemGroup>
 </Project>
