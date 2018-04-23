@@ -39,7 +39,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>E:\android-ndk-r14-beta2\platforms\android-24\arch-arm\usr\include;E:\Review\20180326002\Android-Review\5-Encryption\android-arm\include;$(IncludePath)</IncludePath>
+    <IncludePath>E:\android-ndk-r14-beta2\platforms\android-24\arch-arm\usr\include;E:\Review\openssl\android-arm\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
