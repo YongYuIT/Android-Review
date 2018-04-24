@@ -10,9 +10,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         TestTools.do_test();
-        String out = EncrypTools.doEnDeCryp(1, "fuck", "aaa", "bbb");
+
+        String out = EncrypTools.doEnDeCryp(1, "fuck", "aaa", "hello fuck word");
         Log.i("yuyong", "eny-->" + out);
         String de_out = EncrypTools.doEnDeCryp(2, "fuck", "aaa", out);
+        Log.i("yuyong", "dey-->" + out);
     }
 }
