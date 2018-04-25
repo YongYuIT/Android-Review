@@ -27,6 +27,9 @@
     <ClInclude Include="..\..\J2C2JTools.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Tools.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\test.cpp">
@@ -39,6 +42,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="..\..\J2C2JTools.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

@@ -12,6 +12,8 @@ public class EncrypTools {
 
     //1:加密；2:解密
     public static native String doEnDeCryp(int en_de, String key, String tag, String txt);
+
+    public static native String getID(String txt);
 }
 /*
 cd app/jni

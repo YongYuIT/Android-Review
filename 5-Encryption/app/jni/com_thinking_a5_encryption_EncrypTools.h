@@ -15,6 +15,14 @@ extern "C" {
 	JNIEXPORT jstring JNICALL Java_com_thinking_a5_1encryption_EncrypTools_doEnDeCryp
 		(JNIEnv *, jclass, jint, jstring, jstring, jstring);
 
+	/*
+	 * Class:     com_thinking_a5_encryption_EncrypTools
+	 * Method:    getID
+	 * Signature: (Ljava/lang/String;)Ljava/lang/String;
+	 */
+	JNIEXPORT jstring JNICALL Java_com_thinking_a5_1encryption_EncrypTools_getID
+		(JNIEnv *, jclass, jstring);
+
 #ifdef __cplusplus
 }
 #endif

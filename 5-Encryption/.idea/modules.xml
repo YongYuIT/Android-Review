@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/5-Encryption.iml" filepath="$PROJECT_DIR$/5-Encryption.iml" />
+      <module fileurl="file://E:\Review\20180425001\Android-Review\5-Encryption\5-Encryption.iml" filepath="E:\Review\20180425001\Android-Review\5-Encryption\5-Encryption.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://E:\Review\20180425001\Android-Review\5-Encryption\app\app.iml" filepath="E:\Review\20180425001\Android-Review\5-Encryption\app\app.iml" />
     </modules>
   </component>
 </project>

@@ -122,12 +122,14 @@ public class MainActivity extends AppCompatActivity {
         txt += txt;
         txt += txt;
 
-
+        txt = "this is fuck test";
         String key = "testtesttesttesttesttesttesttesttest";
-        String out = EncrypTools.doEnDeCryp(1, key, "this is tag", txt);
+        String out = EncrypTools.doEnDeCryp(1, key, "testtesttesttest", txt);
         Log.i("yuyong", "eny-->" + out);
-        String de_out = EncrypTools.doEnDeCryp(2, key, "this is tag", out);
-        Log.i("yuyong", "dey-->" + de_out);
+        String id = EncrypTools.getID(out);
+        Log.i("yuyong", "id-->" + id);
+        //String de_out = EncrypTools.doEnDeCryp(2, key, "this is tag", out);
+        //Log.i("yuyong", "dey-->" + de_out);
 
     }
 }

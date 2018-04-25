@@ -70,12 +70,14 @@
     <ClInclude Include="..\..\com_thinking_a5_encryption_TestTools.h" />
     <ClInclude Include="..\..\EncryptionTools.h" />
     <ClInclude Include="..\..\J2C2JTools.h" />
+    <ClInclude Include="..\..\Tools.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\com_thinking_a5_encryption_EncrypTools.cpp" />
     <ClCompile Include="..\..\EncryptionTools.cpp" />
     <ClCompile Include="..\..\J2C2JTools.cpp" />
     <ClCompile Include="..\..\test.cpp" />
+    <ClCompile Include="..\..\Tools.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Android.mk" />
