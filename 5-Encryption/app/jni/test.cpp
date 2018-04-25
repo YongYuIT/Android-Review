@@ -1,5 +1,6 @@
 #include"com_thinking_a5_encryption_TestTools.h"
 #include<android\log.h>
+#include<string>
 
 #include <openssl/evp.h>  
 #include <openssl/bio.h>
@@ -63,9 +64,9 @@ JNIEXPORT void JNICALL Java_com_thinking_a5_1encryption_TestTools_do_1test
 	__android_log_print(ANDROID_LOG_INFO, "yuyong", "test from ndk");
 	string test_in = "fuck you";
 	string out = base64Encode(test_in.c_str(), test_in.length(), false);
-	__android_log_print(ANDROID_LOG_INFO, "yuyong", out.c_str());
+	__android_log_print(ANDROID_LOG_INFO, "yuyong", "%s", out.c_str());
 	string out_de = base64Decode(out.c_str(), out.length(), false);
-	__android_log_print(ANDROID_LOG_INFO, "yuyong", out_de.c_str());
+	__android_log_print(ANDROID_LOG_INFO, "yuyong", "%s", out_de.c_str());
 	//---------------------------------------------------------------------------------------------------------------------
 	if (1 == 1){
 		string input = "hello fuck word";

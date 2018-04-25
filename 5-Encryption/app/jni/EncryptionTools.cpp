@@ -3,7 +3,6 @@
 #include <openssl/bio.h>
 #include <openssl/buffer.h>
 #include <openssl/aes.h>
-#include<android\log.h>
 
 EncryptionTools::EncryptionTools()
 {
@@ -18,12 +17,14 @@ const string EncryptionTools::ivec = "thisisopensslfor";
 
 uint8_t* EncryptionTools::do_en_de(const int size, const uint8_t* input, const string &key, const int enc){
 
+	/*
 	string log = key + " " + to_string(size) + " " + to_string(enc) + "----input-->";
 	for (int i = 0; i < size; i++){
-		log += " " + to_string(input[i]);
+	log += " " + to_string(input[i]);
 	}
 	log += "--end";
-	__android_log_print(ANDROID_LOG_INFO, "yuyong", log.c_str());
+	__android_log_print(ANDROID_LOG_INFO, "yuyong", "%s", log.c_str());
+	*/
 
 	//准备异或向量
 	uint8_t* en_de_iv = (uint8_t*)malloc(size);
@@ -32,32 +33,55 @@ uint8_t* EncryptionTools::do_en_de(const int size, const uint8_t* input, const s
 	for (int i = 0; i < block_num; i++){
 		memcpy(en_de_iv + i*AES_BLOCK_SIZE, EncryptionTools::ivec.data(), AES_BLOCK_SIZE);
 	}
+
+	/*
 	log = "----iv-->";
 	for (int i = 0; i < size; i++){
-		log += " " + to_string(en_de_iv[i]);
+	log += " " + to_string(en_de_iv[i]);
 	}
 	log += "--end";
-	__android_log_print(ANDROID_LOG_INFO, "yuyong", log.c_str());
+	__android_log_print(ANDROID_LOG_INFO, "yuyong", "%s", log.c_str());
+	*/
 
 	AES_KEY aes_key;
+	int gen_key;
+	uint8_t * key_cache = (uint8_t *)malloc(256 / 8);
+	memset(key_cache, 0, 256 / 8);
+	memcpy(key_cache, (const uint8_t*)key.data(), key.length());
+
+	/*
+	log = "----key cache 32-->";
+	for (int i = 0; i < (256 / 8); i++){
+	log += " " + to_string(key_cache[i]);
+	}
+	log += "--end";
+	__android_log_print(ANDROID_LOG_INFO, "yuyong", "%s", log.c_str());
+	*/
+
+
 	if (enc == AES_ENCRYPT){
-		AES_set_encrypt_key((const uint8_t*)key.data(), 256, &aes_key);
+		gen_key = AES_set_encrypt_key(key_cache, 256, &aes_key);
 	}
 	else{
-		AES_set_decrypt_key((const uint8_t*)key.data(), 256, &aes_key);
+		gen_key = AES_set_decrypt_key(key_cache, 256, &aes_key);
 	}
+	//__android_log_print(ANDROID_LOG_INFO, "yuyong", "gen key %s --> %i", key.c_str(), gen_key);
 	uint8_t* result = (uint8_t*)malloc(size);
 	memset(result, 0, size);
 	AES_cbc_encrypt(input, result, size, &aes_key, en_de_iv, enc);
 	free(en_de_iv);
 	en_de_iv = NULL;
+	free(key_cache);
+	key_cache = NULL;
 
+	/*
 	log = key + "----output-->";
 	for (int i = 0; i < size; i++){
-		log += " " + to_string(result[i]);
+	log += " " + to_string(result[i]);
 	}
 	log += "--end";
-	__android_log_print(ANDROID_LOG_INFO, "yuyong", log.c_str());
+	__android_log_print(ANDROID_LOG_INFO, "yuyong", "%s", log.c_str());
+	*/
 
 	return result;
 }
@@ -86,7 +110,9 @@ char* EncryptionTools::do_decy(const string& key, const string& txt){
 		input_lg -= 1;
 	}
 	uint8_t* de_result = do_en_de(input_lg, input_data, key, AES_DECRYPT);
-	__android_log_print(ANDROID_LOG_INFO, "yuyong", "do_decy result --> %s", de_result);
+	free(input_data);
+	input_data = NULL;
+	//__android_log_print(ANDROID_LOG_INFO, "yuyong", "do_decy result --> %s", de_result);
 	return (char*)de_result;
 
 }
