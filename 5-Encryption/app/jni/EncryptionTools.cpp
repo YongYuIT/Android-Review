@@ -23,14 +23,14 @@ const string EncryptionTools::en_tag = "#$#$#$#$";
 
 uint8_t* EncryptionTools::do_en_de(const int size, const uint8_t* input, const string &key, const int enc){
 
-	/*
+
 	string log = key + " " + to_string(size) + " " + to_string(enc) + "----input-->";
 	for (int i = 0; i < size; i++){
-	log += " " + to_string(input[i]);
+		log += " " + to_string(input[i]);
 	}
 	log += "--end";
-	__android_log_print(ANDROID_LOG_INFO, "yuyong", "%s", log.c_str());
-	*/
+	__android_log_print(ANDROID_LOG_INFO, "yuyong_en_de", "%s", log.c_str());
+
 
 	//准备异或向量
 	uint8_t* en_de_iv = (uint8_t*)malloc(size);
@@ -40,14 +40,14 @@ uint8_t* EncryptionTools::do_en_de(const int size, const uint8_t* input, const s
 		memcpy(en_de_iv + i*AES_BLOCK_SIZE, EncryptionTools::ivec.data(), AES_BLOCK_SIZE);
 	}
 
-	/*
+
 	log = "----iv-->";
 	for (int i = 0; i < size; i++){
-	log += " " + to_string(en_de_iv[i]);
+		log += " " + to_string(en_de_iv[i]);
 	}
 	log += "--end";
-	__android_log_print(ANDROID_LOG_INFO, "yuyong", "%s", log.c_str());
-	*/
+	__android_log_print(ANDROID_LOG_INFO, "yuyong_en_de", "%s", log.c_str());
+
 
 	AES_KEY aes_key;
 	int gen_key;
@@ -55,14 +55,14 @@ uint8_t* EncryptionTools::do_en_de(const int size, const uint8_t* input, const s
 	memset(key_cache, 0, 256 / 8);
 	memcpy(key_cache, (const uint8_t*)key.data(), key.length());
 
-	/*
+
 	log = "----key cache 32-->";
 	for (int i = 0; i < (256 / 8); i++){
-	log += " " + to_string(key_cache[i]);
+		log += " " + to_string(key_cache[i]);
 	}
 	log += "--end";
-	__android_log_print(ANDROID_LOG_INFO, "yuyong", "%s", log.c_str());
-	*/
+	__android_log_print(ANDROID_LOG_INFO, "yuyong_en_de", "%s", log.c_str());
+
 
 
 	if (enc == AES_ENCRYPT){
@@ -71,7 +71,9 @@ uint8_t* EncryptionTools::do_en_de(const int size, const uint8_t* input, const s
 	else{
 		gen_key = AES_set_decrypt_key(key_cache, 256, &aes_key);
 	}
-	//__android_log_print(ANDROID_LOG_INFO, "yuyong", "gen key %s --> %i", key.c_str(), gen_key);
+
+	__android_log_print(ANDROID_LOG_INFO, "yuyong_en_de", "gen key %s --> %i", key.c_str(), gen_key);
+
 	uint8_t* result = (uint8_t*)malloc(size);
 	memset(result, 0, size);
 	AES_cbc_encrypt(input, result, size, &aes_key, en_de_iv, enc);
@@ -80,14 +82,12 @@ uint8_t* EncryptionTools::do_en_de(const int size, const uint8_t* input, const s
 	free(key_cache);
 	key_cache = NULL;
 
-	/*
 	log = key + "----output-->";
 	for (int i = 0; i < size; i++){
-	log += " " + to_string(result[i]);
+		log += " " + to_string(result[i]);
 	}
 	log += "--end";
-	__android_log_print(ANDROID_LOG_INFO, "yuyong", "%s", log.c_str());
-	*/
+	__android_log_print(ANDROID_LOG_INFO, "yuyong_en_de", "%s", log.c_str());
 
 	return result;
 }
@@ -132,7 +132,7 @@ char* EncryptionTools::do_ency(const string& key, const string& tag, const strin
 	free(en_result);
 	en_result = NULL;
 
-	char* result = do_base64_en(all_result, size);
+	char* result = do_base64_en(all_result, before_size + size);
 	free(all_result);
 	all_result = NULL;
 	return result;
@@ -161,6 +161,14 @@ char* EncryptionTools::get_id(const string txt){
 	{
 		input_lg -= 1;
 	}
+
+	string log = to_string(input_lg) + "-->" + to_string(txt.length()) + "----pre input-->";
+	for (int i = 0; i < 48; i++){
+		log += " " + to_string(input_data[i]);
+	}
+	log += "--end";
+	__android_log_print(ANDROID_LOG_INFO, "yuyong", "%s", log.c_str());
+
 	uint8_t* head_input_data = (uint8_t*)malloc(AES_BLOCK_SIZE);
 	memcpy(head_input_data, input_data, AES_BLOCK_SIZE);
 	uint8_t* de_head_result = do_en_de(AES_BLOCK_SIZE, head_input_data, id_key, AES_DECRYPT);
@@ -180,9 +188,17 @@ char* EncryptionTools::get_id(const string txt){
 	int all_head_size = AES_BLOCK_SIZE*(tag_size + 1);
 	uint8_t* all_head_data = (uint8_t*)malloc(all_head_size);
 	memcpy(all_head_data, input_data, all_head_size);
+
+	log = "----input-->";
+	for (int i = 0; i < all_head_size; i++){
+		log += " " + to_string(all_head_data[i]);
+	}
+	log += "--end";
+	__android_log_print(ANDROID_LOG_INFO, "yuyong", "%s", log.c_str());
+
 	uint8_t* de_all_head_result = do_en_de(all_head_size, all_head_data, id_key, AES_DECRYPT);
 
-	string log = "----output-->";
+	log = "----output-->";
 	for (int i = 0; i < all_head_size; i++){
 		log += " " + to_string(de_all_head_result[i]);
 	}
