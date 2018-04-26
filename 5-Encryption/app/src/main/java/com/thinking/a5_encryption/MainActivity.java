@@ -28,14 +28,14 @@ public class MainActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                for (int i = 0; i < 100; i++) {
+                for (int i = 0; i < 10000; i++) {
                     Log.i("yuyong", i + "------------------------" + i);
                     String key = "testtesttesttesttesttesttesttesttest";
                     String out = EncrypTools.doEnCryp(key, "testtesttesttest", txt);
                     Log.i("yuyong", "--eny-->" + out);
                     //这里有bug
-                    //String id = EncrypTools.getID(out);
-                    //Log.i("yuyong", "--id-->" + id);
+                    String id = EncrypTools.getID(out);
+                    Log.i("yuyong", "--id-->" + id);
                     String de_out = EncrypTools.doDeCryp(key, out);
                     Log.i("yuyong", "--dey-->" + de_out);
                 }

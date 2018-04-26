@@ -125,7 +125,7 @@ int EncryptionTools::get_id_size(const string& txt){
 	return Tools::str2int(de_head_result_str);
 }
 
-char* EncryptionTools::get_id(const string txt){
+string EncryptionTools::get_id(const string txt){
 	int tag_size = get_id_size(txt);
 	uint8_t* input_data = (uint8_t*)do_base64_de(txt.c_str(), txt.length());
 
@@ -135,7 +135,11 @@ char* EncryptionTools::get_id(const string txt){
 	free(input_data);
 	input_data = NULL;
 
-	return (char*)(de_all_head_result + AES_BLOCK_SIZE);
+	string de_all_head_result_str((char*)(de_all_head_result + AES_BLOCK_SIZE));
+	free(de_all_head_result);
+	de_all_head_result = NULL;
+
+	return de_all_head_result_str;
 }
 
 char* EncryptionTools::do_decy(const string& key, const string& txt, bool is_tag){

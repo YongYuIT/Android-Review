@@ -42,16 +42,14 @@ JNIEXPORT jstring JNICALL Java_com_thinking_a5_1encryption_EncrypTools_doDeCryp
 JNIEXPORT jstring JNICALL Java_com_thinking_a5_1encryption_EncrypTools_getID
 (JNIEnv * env, jclass j_class, jstring txt){
 	string c_txt = J2C2JTools::jstring2string(txt, env);
-	char* result = EncryptionTools::get_id(c_txt);
-	jstring out_put = env->NewStringUTF(result);
+	string result = EncryptionTools::get_id(c_txt);
+	jstring out_put = env->NewStringUTF(result.c_str());
 	if (env->ExceptionOccurred()){
 		env->ExceptionDescribe();
 		env->ExceptionClear();
 		return NULL;
 	}
 	else{
-		free(result);
-		result = NULL;
 		return out_put;
 	}
 }
