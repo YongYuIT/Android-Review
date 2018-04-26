@@ -154,23 +154,12 @@ char* EncryptionTools::do_ency(const string& key, const string& txt){
 	return result;
 }
 
-char* EncryptionTools::get_id(const string txt){
+int EncryptionTools::get_id_size(const string& txt){
 	uint8_t* input_data = (uint8_t*)do_base64_de(txt.c_str(), txt.length());
-	int input_lg = txt.length();
-	while (input_data[input_lg - 1] == 0)
-	{
-		input_lg -= 1;
-	}
-
-	string log = to_string(input_lg) + "-->" + to_string(txt.length()) + "----pre input-->";
-	for (int i = 0; i < 48; i++){
-		log += " " + to_string(input_data[i]);
-	}
-	log += "--end";
-	__android_log_print(ANDROID_LOG_INFO, "yuyong", "%s", log.c_str());
-
 	uint8_t* head_input_data = (uint8_t*)malloc(AES_BLOCK_SIZE);
 	memcpy(head_input_data, input_data, AES_BLOCK_SIZE);
+	free(input_data);
+	input_data = NULL;
 	uint8_t* de_head_result = do_en_de(AES_BLOCK_SIZE, head_input_data, id_key, AES_DECRYPT);
 	free(head_input_data);
 	head_input_data = NULL;
@@ -179,37 +168,25 @@ char* EncryptionTools::get_id(const string txt){
 	de_head_result = NULL;
 	int index = de_head_result_str.find(en_tag);
 	if (index == -1)
-		return NULL;
-	__android_log_print(ANDROID_LOG_INFO, "yuyong", "size info index is %i", index);
+		return -1;
 	de_head_result_str = de_head_result_str.substr(index + en_tag.length(), de_head_result_str.length() - 1);
-	int tag_size = Tools::str2int(de_head_result_str);
-	__android_log_print(ANDROID_LOG_INFO, "yuyong", "size info is %i", tag_size);
+	return Tools::str2int(de_head_result_str);
+}
+
+char* EncryptionTools::get_id(const string txt){
+	int tag_size = get_id_size(txt);
+	uint8_t* input_data = (uint8_t*)do_base64_de(txt.c_str(), txt.length());
 
 	int all_head_size = AES_BLOCK_SIZE*(tag_size + 1);
 	uint8_t* all_head_data = (uint8_t*)malloc(all_head_size);
 	memcpy(all_head_data, input_data, all_head_size);
-
-	log = "----input-->";
-	for (int i = 0; i < all_head_size; i++){
-		log += " " + to_string(all_head_data[i]);
-	}
-	log += "--end";
-	__android_log_print(ANDROID_LOG_INFO, "yuyong", "%s", log.c_str());
+	free(input_data);
+	input_data = NULL;
 
 	uint8_t* de_all_head_result = do_en_de(all_head_size, all_head_data, id_key, AES_DECRYPT);
-
-	log = "----output-->";
-	for (int i = 0; i < all_head_size; i++){
-		log += " " + to_string(de_all_head_result[i]);
-	}
-	log += "--end";
-	__android_log_print(ANDROID_LOG_INFO, "yuyong", "%s", log.c_str());
-
 	free(all_head_data);
 	all_head_data = NULL;
 
-	free(input_data);
-	input_data = NULL;
 	return (char*)(de_all_head_result + AES_BLOCK_SIZE);
 }
 
