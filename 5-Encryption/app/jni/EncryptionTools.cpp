@@ -130,14 +130,10 @@ char* EncryptionTools::get_id(const string txt){
 	uint8_t* input_data = (uint8_t*)do_base64_de(txt.c_str(), txt.length());
 
 	int all_head_size = AES_BLOCK_SIZE*(tag_size + 1);
-	uint8_t* all_head_data = (uint8_t*)malloc(all_head_size);
-	memcpy(all_head_data, input_data, all_head_size);
+	uint8_t* de_all_head_result = do_en_de(all_head_size, input_data, id_key, AES_DECRYPT);
+
 	free(input_data);
 	input_data = NULL;
-
-	uint8_t* de_all_head_result = do_en_de(all_head_size, all_head_data, id_key, AES_DECRYPT);
-	free(all_head_data);
-	all_head_data = NULL;
 
 	return (char*)(de_all_head_result + AES_BLOCK_SIZE);
 }
