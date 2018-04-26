@@ -150,9 +150,13 @@ char* EncryptionTools::do_decy(const string& key, const string& txt, bool is_tag
 	{
 		input_lg -= 1;
 	}
+
 	if (is_tag){
-		input_data = input_data + (get_id_size(txt) + 1)*AES_BLOCK_SIZE;
+		int tag_size = (get_id_size(txt) + 1)*AES_BLOCK_SIZE;
+		input_data = input_data + tag_size;
+		input_lg = input_lg - tag_size;
 	}
+
 	uint8_t* de_result = do_en_de(input_lg, input_data, key, AES_DECRYPT);
 	free(input_data);
 	input_data = NULL;

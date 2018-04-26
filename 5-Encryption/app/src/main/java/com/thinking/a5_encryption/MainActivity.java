@@ -28,20 +28,16 @@ public class MainActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                for (int i = 0; i < 1000; i++) {
-                    try {
-                        Log.i("yuyong", i + "------------------------" + i);
-                        String key = "testtesttesttesttesttesttesttesttest";
-                        String out = EncrypTools.doEnCryp(key, "testtesttesttest", txt);
-                        Log.i("yuyong", "--eny-->" + out);
-                        String id = EncrypTools.getID(out);
-                        Log.i("yuyong", "--id-->" + id);
-                        String de_out = EncrypTools.doDeCryp(key, out);
-                        Log.i("yuyong", "--dey-->" + de_out);
-                    } catch (Throwable t) {
-                        t.printStackTrace();
-                    }
-
+                for (int i = 0; i < 100; i++) {
+                    Log.i("yuyong", i + "------------------------" + i);
+                    String key = "testtesttesttesttesttesttesttesttest";
+                    String out = EncrypTools.doEnCryp(key, "testtesttesttest", txt);
+                    Log.i("yuyong", "--eny-->" + out);
+                    //这里有bug
+                    //String id = EncrypTools.getID(out);
+                    //Log.i("yuyong", "--id-->" + id);
+                    String de_out = EncrypTools.doDeCryp(key, out);
+                    Log.i("yuyong", "--dey-->" + de_out);
                 }
             }
         }).start();
