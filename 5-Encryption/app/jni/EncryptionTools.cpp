@@ -5,9 +5,6 @@
 #include <openssl/aes.h>
 #include "Tools.h"
 
-#include<android\log.h>
-
-
 EncryptionTools::EncryptionTools()
 {
 }
@@ -23,15 +20,6 @@ const string EncryptionTools::en_tag = "#$#$#$#$";
 
 uint8_t* EncryptionTools::do_en_de(const int size, const uint8_t* input, const string &key, const int enc){
 
-
-	string log = key + " " + to_string(size) + " " + to_string(enc) + "----input-->";
-	for (int i = 0; i < size; i++){
-		log += " " + to_string(input[i]);
-	}
-	log += "--end";
-	__android_log_print(ANDROID_LOG_INFO, "yuyong_en_de", "%s", log.c_str());
-
-
 	//准备异或向量
 	uint8_t* en_de_iv = (uint8_t*)malloc(size);
 	memset(en_de_iv, 0, size);
@@ -40,30 +28,11 @@ uint8_t* EncryptionTools::do_en_de(const int size, const uint8_t* input, const s
 		memcpy(en_de_iv + i*AES_BLOCK_SIZE, EncryptionTools::ivec.data(), AES_BLOCK_SIZE);
 	}
 
-
-	log = "----iv-->";
-	for (int i = 0; i < size; i++){
-		log += " " + to_string(en_de_iv[i]);
-	}
-	log += "--end";
-	__android_log_print(ANDROID_LOG_INFO, "yuyong_en_de", "%s", log.c_str());
-
-
 	AES_KEY aes_key;
 	int gen_key;
 	uint8_t * key_cache = (uint8_t *)malloc(256 / 8);
 	memset(key_cache, 0, 256 / 8);
 	memcpy(key_cache, (const uint8_t*)key.data(), key.length());
-
-
-	log = "----key cache 32-->";
-	for (int i = 0; i < (256 / 8); i++){
-		log += " " + to_string(key_cache[i]);
-	}
-	log += "--end";
-	__android_log_print(ANDROID_LOG_INFO, "yuyong_en_de", "%s", log.c_str());
-
-
 
 	if (enc == AES_ENCRYPT){
 		gen_key = AES_set_encrypt_key(key_cache, 256, &aes_key);
@@ -71,8 +40,6 @@ uint8_t* EncryptionTools::do_en_de(const int size, const uint8_t* input, const s
 	else{
 		gen_key = AES_set_decrypt_key(key_cache, 256, &aes_key);
 	}
-
-	__android_log_print(ANDROID_LOG_INFO, "yuyong_en_de", "gen key %s --> %i", key.c_str(), gen_key);
 
 	uint8_t* result = (uint8_t*)malloc(size);
 	memset(result, 0, size);
@@ -82,20 +49,12 @@ uint8_t* EncryptionTools::do_en_de(const int size, const uint8_t* input, const s
 	free(key_cache);
 	key_cache = NULL;
 
-	log = key + "----output-->";
-	for (int i = 0; i < size; i++){
-		log += " " + to_string(result[i]);
-	}
-	log += "--end";
-	__android_log_print(ANDROID_LOG_INFO, "yuyong_en_de", "%s", log.c_str());
-
 	return result;
 }
 
 char* EncryptionTools::do_ency(const string& key, const string& tag, const string& txt){
 	int tag_lg = tag.length() + 1;
 	int tag_size = (tag_lg / AES_BLOCK_SIZE)*AES_BLOCK_SIZE + (tag_lg%AES_BLOCK_SIZE == 0 ? 0 : AES_BLOCK_SIZE);
-	__android_log_print(ANDROID_LOG_INFO, "yuyong", "tag_size is %i", tag_size);
 	int tag_block_num = tag_size / AES_BLOCK_SIZE;
 	string tag_block_num_str = en_tag + to_string(tag_block_num);
 	int before_size = tag_size + AES_BLOCK_SIZE;
@@ -103,13 +62,6 @@ char* EncryptionTools::do_ency(const string& key, const string& tag, const strin
 	memset(before_input_data, 0, before_size);
 	memcpy(before_input_data, tag_block_num_str.data(), tag_block_num_str.length() + 1);
 	memcpy(before_input_data + AES_BLOCK_SIZE, tag.data(), tag_lg);
-
-	string log = "----intput-->";
-	for (int i = 0; i < before_size; i++){
-		log += " " + to_string(before_input_data[i]);
-	}
-	log += "--end";
-	__android_log_print(ANDROID_LOG_INFO, "yuyong", "%s", log.c_str());
 
 	uint8_t* before_en_result = do_en_de(before_size, before_input_data, id_key, AES_ENCRYPT);
 	free(before_input_data);
@@ -204,7 +156,6 @@ char* EncryptionTools::do_decy(const string& key, const string& txt, bool is_tag
 	uint8_t* de_result = do_en_de(input_lg, input_data, key, AES_DECRYPT);
 	free(input_data);
 	input_data = NULL;
-	//__android_log_print(ANDROID_LOG_INFO, "yuyong", "do_decy result --> %s", de_result);
 	return (char*)de_result;
 
 }
