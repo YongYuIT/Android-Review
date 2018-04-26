@@ -9,11 +9,11 @@ extern "C" {
 #endif
 	/*
 	 * Class:     com_thinking_a5_encryption_EncrypTools
-	 * Method:    doEnDeCryp
-	 * Signature: (ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+	 * Method:    doEnCryp
+	 * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
 	 */
-	JNIEXPORT jstring JNICALL Java_com_thinking_a5_1encryption_EncrypTools_doEnDeCryp
-		(JNIEnv *, jclass, jint, jstring, jstring, jstring);
+	JNIEXPORT jstring JNICALL Java_com_thinking_a5_1encryption_EncrypTools_doEnCryp
+		(JNIEnv *, jclass, jstring, jstring, jstring);
 
 	/*
 	 * Class:     com_thinking_a5_encryption_EncrypTools
@@ -22,6 +22,14 @@ extern "C" {
 	 */
 	JNIEXPORT jstring JNICALL Java_com_thinking_a5_1encryption_EncrypTools_getID
 		(JNIEnv *, jclass, jstring);
+
+	/*
+	 * Class:     com_thinking_a5_encryption_EncrypTools
+	 * Method:    doDeCryp
+	 * Signature: (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+	 */
+	JNIEXPORT jstring JNICALL Java_com_thinking_a5_1encryption_EncrypTools_doDeCryp
+		(JNIEnv *, jclass, jstring, jstring);
 
 #ifdef __cplusplus
 }

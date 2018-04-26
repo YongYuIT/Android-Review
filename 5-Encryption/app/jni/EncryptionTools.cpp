@@ -190,13 +190,16 @@ char* EncryptionTools::get_id(const string txt){
 	return (char*)(de_all_head_result + AES_BLOCK_SIZE);
 }
 
-char* EncryptionTools::do_decy(const string& key, const string& txt){
+char* EncryptionTools::do_decy(const string& key, const string& txt, bool is_tag){
 
 	uint8_t* input_data = (uint8_t*)do_base64_de(txt.c_str(), txt.length());
 	int input_lg = txt.length();
 	while (input_data[input_lg - 1] == 0)
 	{
 		input_lg -= 1;
+	}
+	if (is_tag){
+		input_data = input_data + (get_id_size(txt) + 1)*AES_BLOCK_SIZE;
 	}
 	uint8_t* de_result = do_en_de(input_lg, input_data, key, AES_DECRYPT);
 	free(input_data);

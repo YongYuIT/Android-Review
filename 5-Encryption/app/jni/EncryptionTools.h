@@ -9,7 +9,7 @@ public:
 	EncryptionTools();
 	~EncryptionTools();
 	static char* do_ency(const string& key, const string& txt);
-	static char* do_decy(const string& key, const string& txt);
+	static char* do_decy(const string& key, const string& txt, const bool is_tag);
 	static char* do_ency(const string& key, const string& tag, const string& txt);
 	static char* get_id(const string txt);
 

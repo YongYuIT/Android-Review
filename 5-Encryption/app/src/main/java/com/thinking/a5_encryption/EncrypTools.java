@@ -10,10 +10,13 @@ public class EncrypTools {
         System.loadLibrary("com_thinking_ende");
     }
 
-    //1:加密；2:解密
-    public static native String doEnDeCryp(int en_de, String key, String tag, String txt);
+
+    public static native String doEnCryp(String key, String id, String txt);
 
     public static native String getID(String txt);
+
+    public static native String doDeCryp(String key, String txt);
+
 }
 /*
 cd app/jni
