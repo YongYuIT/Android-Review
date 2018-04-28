@@ -1,0 +1,7 @@
+Error:Unable to get the CMake version located at: E:\Android\sdk\cmake\bin
+Settings-->Appearance & Behavior-->System Settings-->Android SDK-->SDK Tools-->勾选CMake
+
+https://developer.android.com/studio/projects/add-native-code
+https://developer.android.com/studio/projects/configure-cmake
+Add other prebuilt libraries
+https://developer.android.com/studio/projects/gradle-external-native-builds#configure-gradle
