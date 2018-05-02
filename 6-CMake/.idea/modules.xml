@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/6-CMake.iml" filepath="$PROJECT_DIR$/6-CMake.iml" />
+      <module fileurl="file://E:\Review\20180502002\Android-Review\6-CMake\6-CMake.iml" filepath="E:\Review\20180502002\Android-Review\6-CMake\6-CMake.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://E:\Review\20180502002\Android-Review\6-CMake\app\app.iml" filepath="E:\Review\20180502002\Android-Review\6-CMake\app\app.iml" />
     </modules>
   </component>
 </project>

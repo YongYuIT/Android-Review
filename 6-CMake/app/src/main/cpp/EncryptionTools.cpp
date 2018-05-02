@@ -50,6 +50,46 @@ EncryptionTools::do_en_de(const int size, const uint8_t *input, const string &ke
     return result;
 }
 
+string EncryptionTools::do_ency_cpp(const string &key, const string &tag, const string &txt) {
+    int tag_lg = tag.length() + 1;
+    int tag_size = (tag_lg / AES_BLOCK_SIZE) * AES_BLOCK_SIZE +
+                   (tag_lg % AES_BLOCK_SIZE == 0 ? 0 : AES_BLOCK_SIZE);
+    int tag_block_num = tag_size / AES_BLOCK_SIZE;
+    string tag_block_num_str = en_tag + Tools::to_string(tag_block_num);
+    int before_size = tag_size + AES_BLOCK_SIZE;
+    uint8_t *before_input_data = (uint8_t *) malloc(before_size);
+    memset(before_input_data, 0, before_size);
+    memcpy(before_input_data, tag_block_num_str.data(), tag_block_num_str.length() + 1);
+    memcpy(before_input_data + AES_BLOCK_SIZE, tag.data(), tag_lg);
+
+    uint8_t *before_en_result = do_en_de(before_size, before_input_data, id_key, AES_ENCRYPT);
+    free(before_input_data);
+    before_input_data = NULL;
+
+    int input_lg = txt.length() + 1;
+    int size = (input_lg / AES_BLOCK_SIZE) * AES_BLOCK_SIZE +
+               (input_lg % AES_BLOCK_SIZE == 0 ? 0 : AES_BLOCK_SIZE);
+    uint8_t *input_data = (uint8_t *) malloc(size);
+    memset(input_data, 0, size);
+    memcpy(input_data, txt.data(), input_lg);
+    uint8_t *en_result = do_en_de(size, input_data, key, AES_ENCRYPT);
+    free(input_data);
+    input_data = NULL;
+
+    uint8_t *all_result = (uint8_t *) malloc(before_size + size);
+    memcpy(all_result, before_en_result, before_size);
+    memcpy(all_result + before_size, en_result, size);
+    free(before_en_result);
+    before_en_result = NULL;
+    free(en_result);
+    en_result = NULL;
+
+    string result = do_base64_en_cpp(all_result, before_size + size);
+    free(all_result);
+    all_result = NULL;
+    return result;
+}
+
 char *EncryptionTools::do_ency(const string &key, const string &tag, const string &txt) {
     int tag_lg = tag.length() + 1;
     int tag_size = (tag_lg / AES_BLOCK_SIZE) * AES_BLOCK_SIZE +
@@ -108,7 +148,9 @@ char *EncryptionTools::do_ency(const string &key, const string &txt) {
 }
 
 int EncryptionTools::get_id_size(const string &txt) {
-    uint8_t *input_data = (uint8_t *) do_base64_de(txt.c_str(), txt.length());
+    //uint8_t *input_data = (uint8_t *) do_base64_de(txt.c_str(), txt.length());
+    int input_data_size;
+    uint8_t *input_data = (uint8_t *) do_base64_de_cpp(txt, input_data_size);
     uint8_t *head_input_data = (uint8_t *) malloc(AES_BLOCK_SIZE);
     memcpy(head_input_data, input_data, AES_BLOCK_SIZE);
     free(input_data);
@@ -129,7 +171,9 @@ int EncryptionTools::get_id_size(const string &txt) {
 
 string EncryptionTools::get_id(const string txt) {
     int tag_size = get_id_size(txt);
-    uint8_t *input_data = (uint8_t *) do_base64_de(txt.c_str(), txt.length());
+    //uint8_t *input_data = (uint8_t *) do_base64_de(txt.c_str(), txt.length());
+    int input_data_size;
+    uint8_t *input_data = (uint8_t *) do_base64_de_cpp(txt, input_data_size);
 
     int all_head_size = AES_BLOCK_SIZE * (tag_size + 1);
     uint8_t *de_all_head_result = do_en_de(all_head_size, input_data, id_key, AES_DECRYPT);
@@ -146,19 +190,17 @@ string EncryptionTools::get_id(const string txt) {
 
 char *EncryptionTools::do_decy(const string &key, const string &txt, bool is_tag) {
 
-    uint8_t *input_data = (uint8_t *) do_base64_de(txt.c_str(), txt.length());
-    int input_lg = txt.length();
-    while (input_data[input_lg - 1] == 0) {
-        input_lg -= 1;
-    }
+    int input_lg;
+    uint8_t *input_data = (uint8_t *) do_base64_de_cpp(txt.c_str(), input_lg);
 
+    uint8_t *txt_input_data = NULL;
     if (is_tag) {
         int tag_size = (get_id_size(txt) + 1) * AES_BLOCK_SIZE;
-        input_data = input_data + tag_size;
+        txt_input_data = input_data + tag_size;
         input_lg = input_lg - tag_size;
     }
 
-    uint8_t *de_result = do_en_de(input_lg, input_data, key, AES_DECRYPT);
+    uint8_t *de_result = do_en_de(input_lg, txt_input_data, key, AES_DECRYPT);
     free(input_data);
     input_data = NULL;
     return (char *) de_result;
@@ -177,6 +219,27 @@ void *EncryptionTools::do_base64_de(const char *input, int length) {
     BIO_read(bmem, buffer, length);
     BIO_free_all(bmem);
     return buffer;
+}
+
+string EncryptionTools::do_base64_en_cpp(const void *mem, int size) {
+    uint8_t *out_cache = (uint8_t *) malloc(size + 1);
+    memset(out_cache, 0, size + 1);
+    int result = EVP_EncodeBlock(out_cache, (const uint8_t *) mem, size);
+    string str_result((char *) out_cache, result);
+    free(out_cache);
+    out_cache = NULL;
+    if (result != -1)
+        return str_result;
+    return NULL;
+}
+
+void *EncryptionTools::do_base64_de_cpp(string txt, int &outsize) {
+    uint8_t *out_cache = (uint8_t *) malloc(txt.length());
+    outsize = EVP_DecodeBlock(out_cache, (const uint8_t *) txt.data(), txt.length());
+    if (outsize != -1) {
+        return out_cache;
+    }
+    return NULL;
 }
 
 char *EncryptionTools::do_base64_en(const void *mem, const int length) {

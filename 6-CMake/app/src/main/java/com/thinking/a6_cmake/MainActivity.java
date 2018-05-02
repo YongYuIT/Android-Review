@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         txt += txt;
         txt += txt;
         txt += txt;
+        //txt = "this is an test for this app fuck you";
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -47,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
                     String key = "testtesttesttesttesttesttesttesttest";
                     String out = EncrypTools.doEnCryp(key, "testtesttesttest", txt);
                     Log.i("yuyong", "--eny-->" + out);
-                    //这里有bug
                     String id = EncrypTools.getID(out);
                     Log.i("yuyong", "--id-->" + id);
                     String de_out = EncrypTools.doDeCryp(key, out);
