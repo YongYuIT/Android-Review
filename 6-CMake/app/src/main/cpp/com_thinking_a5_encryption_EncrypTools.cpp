@@ -21,24 +21,11 @@ Java_com_thinking_a5_1encryption_EncrypTools_doEnCryp__Ljava_lang_String_2Ljava_
     string c_key = J2C2JTools::jstring2string(key, env);
     string c_id = J2C2JTools::jstring2string(id, env);
     string c_txt = J2C2JTools::jstring2string(txt, env);
-    if (1 == 1) {
-        string reslut = EncryptionTools::do_ency_cpp(c_key, c_id, c_txt);
-        jstring out_put = env->NewStringUTF(reslut.c_str());
-        return out_put;
-    } else {
-        char *result = EncryptionTools::do_ency(c_key, c_id, c_txt);
-        jstring out_put = env->NewStringUTF(result);
-        if (env->ExceptionOccurred()) {
-            env->ExceptionDescribe();
-            env->ExceptionClear();
-            return NULL;
-        } else {
-            free(result);
-            result = NULL;
-            return out_put;
-        }
 
-    }
+    string reslut = EncryptionTools::do_ency_cpp(c_key, c_id, c_txt);
+    jstring out_put = env->NewStringUTF(reslut.c_str());
+    return out_put;
+
 
 }
 

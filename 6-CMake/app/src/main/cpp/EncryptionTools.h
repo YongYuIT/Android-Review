@@ -11,10 +11,6 @@ public:
 
     ~EncryptionTools();
 
-    static char *do_ency(const string &key, const string &txt);
-
-    static char *do_ency(const string &key, const string &tag, const string &txt);
-
     static string do_ency_cpp(const string &key, const string &txt);
 
     static string do_ency_cpp(const string &key, const string &tag, const string &txt);
@@ -32,10 +28,6 @@ private:
 
     static uint8_t *
     do_en_de(const int size, const uint8_t *input, const string &key, const int enc);
-
-    static char *do_base64_en(const void *mem, const int length);
-
-    static void *do_base64_de(const char *input, int length);
 
     static string do_base64_en_cpp(const void *mem, int size);
 
