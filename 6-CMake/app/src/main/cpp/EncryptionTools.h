@@ -17,7 +17,7 @@ public:
 
     static char *do_decy(const string &key, const string &txt);
 
-    static string get_id(const string txt);
+    static string get_id(const string txt, bool &isSuccess);
 
 private:
     const static string ivec;

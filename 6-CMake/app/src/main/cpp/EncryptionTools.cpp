@@ -109,9 +109,13 @@ string EncryptionTools::do_ency_cpp(const string &key, const string &txt) {
 
 
 int EncryptionTools::get_id_size(const string &txt) {
-    //uint8_t *input_data = (uint8_t *) do_base64_de(txt.c_str(), txt.length());
+    if (txt.length() < 32)
+        return -1;
     int input_data_size;
     uint8_t *input_data = (uint8_t *) do_base64_de_cpp(txt.substr(0, 32), input_data_size);
+    if (input_data_size == -1) {
+        return -1;
+    }
     uint8_t *head_input_data = (uint8_t *) malloc(AES_BLOCK_SIZE);
     memcpy(head_input_data, input_data, AES_BLOCK_SIZE);
     free(input_data);
@@ -130,10 +134,12 @@ int EncryptionTools::get_id_size(const string &txt) {
     return Tools::str2int(de_head_result_str);
 }
 
-string EncryptionTools::get_id(const string txt) {
+string EncryptionTools::get_id(const string txt, bool &isSuccess) {
     int tag_size = get_id_size(txt);
-    if (tag_size < 0)
-        return NULL;
+    if (tag_size < 0) {
+        isSuccess = false;
+        return "";
+    }
     int input_data_size;
     uint8_t *input_data = (uint8_t *) do_base64_de_cpp(txt, input_data_size);
 
@@ -146,7 +152,7 @@ string EncryptionTools::get_id(const string txt) {
     string de_all_head_result_str((char *) (de_all_head_result + AES_BLOCK_SIZE));
     free(de_all_head_result);
     de_all_head_result = NULL;
-
+    isSuccess = true;
     return de_all_head_result_str;
 }
 
@@ -154,6 +160,9 @@ char *EncryptionTools::do_decy(const string &key, const string &txt) {
 
     int input_lg;
     uint8_t *input_data = (uint8_t *) do_base64_de_cpp(txt.c_str(), input_lg);
+    if (input_lg == -1) {
+        return NULL;
+    }
 
     uint8_t *txt_input_data = input_data;
     int tag_size = get_id_size(txt);
@@ -180,7 +189,7 @@ string EncryptionTools::do_base64_en_cpp(const void *mem, int size) {
     out_cache = NULL;
     if (result != -1)
         return str_result;
-    return NULL;
+    return "";
 }
 
 void *EncryptionTools::do_base64_de_cpp(string txt, int &outsize) {

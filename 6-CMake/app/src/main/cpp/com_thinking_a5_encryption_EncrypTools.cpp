@@ -35,6 +35,9 @@ JNIEXPORT jstring JNICALL Java_com_thinking_a5_1encryption_EncrypTools_doDeCryp
     string c_key = J2C2JTools::jstring2string(key, env);
     string c_txt = J2C2JTools::jstring2string(txt, env);
     char *result = EncryptionTools::do_decy(c_key, c_txt);
+    if (result == NULL) {
+        return NULL;
+    }
     jstring out_put = env->NewStringUTF(result);
     if (env->ExceptionOccurred()) {
         env->ExceptionDescribe();
@@ -50,7 +53,10 @@ JNIEXPORT jstring JNICALL Java_com_thinking_a5_1encryption_EncrypTools_doDeCryp
 JNIEXPORT jstring JNICALL Java_com_thinking_a5_1encryption_EncrypTools_getID
         (JNIEnv *env, jclass j_class, jstring txt) {
     string c_txt = J2C2JTools::jstring2string(txt, env);
-    string result = EncryptionTools::get_id(c_txt);
+    bool isGetSuccess = false;
+    string result = EncryptionTools::get_id(c_txt, isGetSuccess);
+    if (isGetSuccess == NULL)
+        return NULL;
     jstring out_put = env->NewStringUTF(result.c_str());
     if (env->ExceptionOccurred()) {
         env->ExceptionDescribe();
