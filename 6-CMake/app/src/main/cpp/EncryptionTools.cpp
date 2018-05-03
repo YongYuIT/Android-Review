@@ -132,7 +132,8 @@ int EncryptionTools::get_id_size(const string &txt) {
 
 string EncryptionTools::get_id(const string txt) {
     int tag_size = get_id_size(txt);
-    //uint8_t *input_data = (uint8_t *) do_base64_de(txt.c_str(), txt.length());
+    if (tag_size < 0)
+        return NULL;
     int input_data_size;
     uint8_t *input_data = (uint8_t *) do_base64_de_cpp(txt, input_data_size);
 
@@ -168,7 +169,6 @@ char *EncryptionTools::do_decy(const string &key, const string &txt) {
     return (char *) de_result;
 
 }
-
 
 
 string EncryptionTools::do_base64_en_cpp(const void *mem, int size) {
