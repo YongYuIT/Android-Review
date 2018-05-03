@@ -33,7 +33,7 @@ JNIEXPORT jstring JNICALL Java_com_thinking_a5_1encryption_EncrypTools_doDeCryp
         (JNIEnv *env, jclass j_class, jstring key, jstring txt) {
     string c_key = J2C2JTools::jstring2string(key, env);
     string c_txt = J2C2JTools::jstring2string(txt, env);
-    char *result = EncryptionTools::do_decy(c_key, c_txt, true);
+    char *result = EncryptionTools::do_decy(c_key, c_txt);
     jstring out_put = env->NewStringUTF(result);
     if (env->ExceptionOccurred()) {
         env->ExceptionDescribe();

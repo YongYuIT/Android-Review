@@ -150,7 +150,7 @@ char *EncryptionTools::do_ency(const string &key, const string &txt) {
 int EncryptionTools::get_id_size(const string &txt) {
     //uint8_t *input_data = (uint8_t *) do_base64_de(txt.c_str(), txt.length());
     int input_data_size;
-    uint8_t *input_data = (uint8_t *) do_base64_de_cpp(txt, input_data_size);
+    uint8_t *input_data = (uint8_t *) do_base64_de_cpp(txt.substr(0, 32), input_data_size);
     uint8_t *head_input_data = (uint8_t *) malloc(AES_BLOCK_SIZE);
     memcpy(head_input_data, input_data, AES_BLOCK_SIZE);
     free(input_data);
@@ -188,14 +188,15 @@ string EncryptionTools::get_id(const string txt) {
     return de_all_head_result_str;
 }
 
-char *EncryptionTools::do_decy(const string &key, const string &txt, bool is_tag) {
+char *EncryptionTools::do_decy(const string &key, const string &txt) {
 
     int input_lg;
     uint8_t *input_data = (uint8_t *) do_base64_de_cpp(txt.c_str(), input_lg);
 
-    uint8_t *txt_input_data = NULL;
-    if (is_tag) {
-        int tag_size = (get_id_size(txt) + 1) * AES_BLOCK_SIZE;
+    uint8_t *txt_input_data = input_data;
+    int tag_size = get_id_size(txt);
+    if (tag_size > 0) {
+        tag_size = (tag_size + 1) * AES_BLOCK_SIZE;
         txt_input_data = input_data + tag_size;
         input_lg = input_lg - tag_size;
     }
