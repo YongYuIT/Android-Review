@@ -11,6 +11,8 @@ public class EncrypTools {
     }
 
 
+    public static native String doEnCryp(String key, String txt);
+
     public static native String doEnCryp(String key, String id, String txt);
 
     public static native String getID(String txt);
@@ -19,6 +21,6 @@ public class EncrypTools {
 
 }
 /*
-cd app/jni
-javah -d . -classpath ..\build\intermediates\classes\debug com.thinking.a5_encryption.EncrypTools
+cd app\src\main\cpp
+javah -d . -classpath ..\..\..\build\intermediates\classes\debug com.thinking.a5_encryption.EncrypTools
 */

@@ -15,6 +15,8 @@ public:
 
     static char *do_ency(const string &key, const string &tag, const string &txt);
 
+    static string do_ency_cpp(const string &key, const string &txt);
+
     static string do_ency_cpp(const string &key, const string &tag, const string &txt);
 
     static char *do_decy(const string &key, const string &txt);

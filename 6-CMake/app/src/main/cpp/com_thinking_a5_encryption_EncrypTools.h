@@ -7,29 +7,37 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-	/*
-	 * Class:     com_thinking_a5_encryption_EncrypTools
-	 * Method:    doEnCryp
-	 * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
-	 */
-	JNIEXPORT jstring JNICALL Java_com_thinking_a5_1encryption_EncrypTools_doEnCryp
-		(JNIEnv *, jclass, jstring, jstring, jstring);
+/*
+ * Class:     com_thinking_a5_encryption_EncrypTools
+ * Method:    doEnCryp
+ * Signature: (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+ */
+JNIEXPORT jstring JNICALL Java_com_thinking_a5_1encryption_EncrypTools_doEnCryp__Ljava_lang_String_2Ljava_lang_String_2
+  (JNIEnv *, jclass, jstring, jstring);
 
-	/*
-	 * Class:     com_thinking_a5_encryption_EncrypTools
-	 * Method:    getID
-	 * Signature: (Ljava/lang/String;)Ljava/lang/String;
-	 */
-	JNIEXPORT jstring JNICALL Java_com_thinking_a5_1encryption_EncrypTools_getID
-		(JNIEnv *, jclass, jstring);
+/*
+ * Class:     com_thinking_a5_encryption_EncrypTools
+ * Method:    doEnCryp
+ * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+ */
+JNIEXPORT jstring JNICALL Java_com_thinking_a5_1encryption_EncrypTools_doEnCryp__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2
+  (JNIEnv *, jclass, jstring, jstring, jstring);
 
-	/*
-	 * Class:     com_thinking_a5_encryption_EncrypTools
-	 * Method:    doDeCryp
-	 * Signature: (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
-	 */
-	JNIEXPORT jstring JNICALL Java_com_thinking_a5_1encryption_EncrypTools_doDeCryp
-		(JNIEnv *, jclass, jstring, jstring);
+/*
+ * Class:     com_thinking_a5_encryption_EncrypTools
+ * Method:    getID
+ * Signature: (Ljava/lang/String;)Ljava/lang/String;
+ */
+JNIEXPORT jstring JNICALL Java_com_thinking_a5_1encryption_EncrypTools_getID
+  (JNIEnv *, jclass, jstring);
+
+/*
+ * Class:     com_thinking_a5_encryption_EncrypTools
+ * Method:    doDeCryp
+ * Signature: (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+ */
+JNIEXPORT jstring JNICALL Java_com_thinking_a5_1encryption_EncrypTools_doDeCryp
+  (JNIEnv *, jclass, jstring, jstring);
 
 #ifdef __cplusplus
 }

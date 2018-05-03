@@ -3,7 +3,20 @@
 #include"J2C2JTools.h"
 #include"EncryptionTools.h"
 
-JNIEXPORT jstring JNICALL Java_com_thinking_a5_1encryption_EncrypTools_doEnCryp
+JNIEXPORT jstring JNICALL
+Java_com_thinking_a5_1encryption_EncrypTools_doEnCryp__Ljava_lang_String_2Ljava_lang_String_2
+        (JNIEnv *env, jclass j_class, jstring key, jstring txt) {
+    string c_key = J2C2JTools::jstring2string(key, env);
+    string c_txt = J2C2JTools::jstring2string(txt, env);
+
+    string reslut = EncryptionTools::do_ency_cpp(c_key, c_txt);
+    jstring out_put = env->NewStringUTF(reslut.c_str());
+    return out_put;
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_thinking_a5_1encryption_EncrypTools_doEnCryp__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2
+
         (JNIEnv *env, jclass j_class, jstring key, jstring id, jstring txt) {
     string c_key = J2C2JTools::jstring2string(key, env);
     string c_id = J2C2JTools::jstring2string(id, env);
@@ -28,6 +41,7 @@ JNIEXPORT jstring JNICALL Java_com_thinking_a5_1encryption_EncrypTools_doEnCryp
     }
 
 }
+
 
 JNIEXPORT jstring JNICALL Java_com_thinking_a5_1encryption_EncrypTools_doDeCryp
         (JNIEnv *env, jclass j_class, jstring key, jstring txt) {

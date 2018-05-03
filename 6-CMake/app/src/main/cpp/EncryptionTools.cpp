@@ -90,6 +90,23 @@ string EncryptionTools::do_ency_cpp(const string &key, const string &tag, const 
     return result;
 }
 
+string EncryptionTools::do_ency_cpp(const string &key, const string &txt) {
+    int input_lg = txt.length() + 1;
+    int size = (input_lg / AES_BLOCK_SIZE) * AES_BLOCK_SIZE +
+               (input_lg % AES_BLOCK_SIZE == 0 ? 0 : AES_BLOCK_SIZE);
+    uint8_t *input_data = (uint8_t *) malloc(size);
+    memset(input_data, 0, size);
+    memcpy(input_data, txt.data(), input_lg);
+    uint8_t *en_result = do_en_de(size, input_data, key, AES_ENCRYPT);
+    free(input_data);
+    input_data = NULL;
+
+    string result = do_base64_en_cpp(en_result, size);
+    free(en_result);
+    en_result = NULL;
+    return result;
+}
+
 char *EncryptionTools::do_ency(const string &key, const string &tag, const string &txt) {
     int tag_lg = tag.length() + 1;
     int tag_size = (tag_lg / AES_BLOCK_SIZE) * AES_BLOCK_SIZE +
