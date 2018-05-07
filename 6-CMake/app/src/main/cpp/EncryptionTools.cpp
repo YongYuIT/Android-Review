@@ -31,7 +31,7 @@ EncryptionTools::do_en_de(const int size, const uint8_t *input, const string &ke
     int gen_key;
     uint8_t *key_cache = (uint8_t *) malloc(256 / 8);
     memset(key_cache, 0, 256 / 8);
-    memcpy(key_cache, (const uint8_t *) key.data(), key.length());
+    memcpy(key_cache, (const uint8_t *) key.data(), key.length() > 32 ? 32 : key.length());
 
     if (enc == AES_ENCRYPT) {
         gen_key = AES_set_encrypt_key(key_cache, 256, &aes_key);
@@ -181,8 +181,9 @@ char *EncryptionTools::do_decy(const string &key, const string &txt) {
 
 
 string EncryptionTools::do_base64_en_cpp(const void *mem, int size) {
-    uint8_t *out_cache = (uint8_t *) malloc(size + 1);
-    memset(out_cache, 0, size + 1);
+    int cache_size = (size - 1) / 3 * 4 + 4 + 1;
+    uint8_t *out_cache = (uint8_t *) malloc(cache_size);
+    memset(out_cache, 0, cache_size);
     int result = EVP_EncodeBlock(out_cache, (const uint8_t *) mem, size);
     string str_result((char *) out_cache, result);
     free(out_cache);
