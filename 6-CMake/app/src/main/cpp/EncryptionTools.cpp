@@ -142,6 +142,10 @@ string EncryptionTools::get_id(const string txt, bool &isSuccess) {
     }
     int input_data_size;
     uint8_t *input_data = (uint8_t *) do_base64_de_cpp(txt, input_data_size);
+	if (input_data_size==-1) {
+        isSuccess = false;
+        return "";
+    }
 
     int all_head_size = AES_BLOCK_SIZE * (tag_size + 1);
     uint8_t *de_all_head_result = do_en_de(all_head_size, input_data, id_key, AES_DECRYPT);
